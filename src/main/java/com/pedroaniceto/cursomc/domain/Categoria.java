@@ -3,11 +3,10 @@ package com.pedroaniceto.cursomc.domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,8 +18,10 @@ public class Categoria implements Serializable {
     private Integer id;
     private String  nome;
 
-    public Categoria() {
+    @ManyToMany(mappedBy = "categorias")
+    private List<Produto> produtos = new ArrayList<>();
 
+    public Categoria() {
     }
 
     public Categoria(Integer id, String nome) {
@@ -37,6 +38,10 @@ public class Categoria implements Serializable {
         return nome;
     }
 
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -45,19 +50,20 @@ public class Categoria implements Serializable {
         this.nome = nome;
     }
 
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Categoria categoria = (Categoria) o;
-        return Objects.equals(id, categoria.id) &&
-                Objects.equals(nome, categoria.nome);
+        return Objects.equals(id, categoria.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome);
+        return Objects.hash(id);
     }
-
-
 }
