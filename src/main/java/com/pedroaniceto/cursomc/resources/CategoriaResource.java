@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pedroaniceto.cursomc.domain.Categoria;
 import com.pedroaniceto.cursomc.services.CategoriaService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value="/categorias")
@@ -22,5 +25,14 @@ public class CategoriaResource {
     public ResponseEntity<?> find(@PathVariable Integer id) throws ObjectNotFoundException {
         Categoria obj = service.find(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @RequestMapping(method=RequestMethod.POST)
+    public ResponseEntity<Void> insert(Categoria obj) {
+        obj = service.insert(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 }
