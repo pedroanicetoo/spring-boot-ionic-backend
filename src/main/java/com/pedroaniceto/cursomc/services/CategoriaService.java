@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.pedroaniceto.cursomc.domain.Categoria;
@@ -34,6 +35,15 @@ public class CategoriaService {
             e.printStackTrace();
         }
         return repo.save(obj);
+    }
+
+    public void delete(Integer id) {
+        try {
+            find(id);
+            repo.deleteById(id);
+        } catch (DataIntegrityViolationException | ObjectNotFoundException e) {
+            throw new DataIntegrityViolationException("Não é possível excluir uma categoria que possui produtos");
+        }
     }
 
 }
