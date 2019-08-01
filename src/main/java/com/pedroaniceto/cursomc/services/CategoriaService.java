@@ -27,4 +27,13 @@ public class CategoriaService {
         return repo.save(obj);
     }
 
+    public Categoria update(Categoria obj) {
+        try {
+            find(obj.getId());
+        } catch (ObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+        return repo.save(obj);
+    }
+
 }
