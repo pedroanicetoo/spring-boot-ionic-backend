@@ -1,6 +1,7 @@
 
 package com.pedroaniceto.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -46,4 +47,7 @@ public class CategoriaService {
         }
     }
 
+    public List<Categoria> findAll() {
+        return repo.findAll();
+    }
 }
