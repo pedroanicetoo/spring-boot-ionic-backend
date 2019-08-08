@@ -4,6 +4,7 @@ package com.pedroaniceto.cursomc.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.pedroaniceto.cursomc.dto.CategoriaDTO;
 import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,7 +25,7 @@ public class CategoriaService {
     public Categoria find(Integer id) throws ObjectNotFoundException {
         Optional<Categoria> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+                "Objeto n?o encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
     }
 
     public Categoria insert(Categoria obj) {
@@ -46,7 +47,7 @@ public class CategoriaService {
             find(id);
             repo.deleteById(id);
         } catch (DataIntegrityViolationException | ObjectNotFoundException e) {
-            throw new DataIntegrityViolationException("Não é possível excluir uma categoria que possui produtos");
+            throw new DataIntegrityViolationException("N?o ? poss?vel excluir uma categoria que possui produtos");
         }
     }
 
@@ -57,6 +58,10 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return repo.findAll(pageRequest);
+    }
+
+    public Categoria fromDTO(CategoriaDTO objDto) {
+        return new Categoria(objDto.getId(), objDto.getNome());
     }
 
 }
