@@ -33,13 +33,15 @@ public class CategoriaService {
         return repo.save(obj);
     }
 
-    public Categoria update(Categoria obj) {
+    public Categoria update(Categoria obj) throws ObjectNotFoundException {
+        Categoria newObj = find(obj.getId());
+        udateData(newObj, obj);
         try {
             find(obj.getId());
         } catch (ObjectNotFoundException e) {
             e.printStackTrace();
         }
-        return repo.save(obj);
+        return repo.save(newObj);
     }
 
     public void delete(Integer id) {
@@ -62,6 +64,10 @@ public class CategoriaService {
 
     public Categoria fromDTO(CategoriaDTO objDto) {
         return new Categoria(objDto.getId(), objDto.getNome());
+    }
+
+    public void udateData(Categoria newObj, Categoria obj) {
+        newObj.setNome(obj.getNome());
     }
 
 }
